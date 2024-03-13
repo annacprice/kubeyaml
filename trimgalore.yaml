@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: trimgalore
+  labels:
+    app: trimgalore
+spec:
+  containers:
+  - image: quay.io/climb-big-data/trimgalore:0.6.7
+    volumeMounts:
+      - mountPath: /data
+        name: cephfs-shared-team-name
+    resources:
+      requests:
+        memory: "4G"
+        cpu: "1"
+      limits:
+        memory: "6G"
+        cpu: "1"
+    command:
+      - "sleep"
+      - "7200"
+    imagePullPolicy: IfNotPresent
+    name: trimgalore
+  volumes:
+    - name: cephfs-shared-team-name
+      persistentVolumeClaim:
+        claimName: cephfs-shared-team
+  restartPolicy: onFailure
